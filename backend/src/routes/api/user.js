@@ -10,25 +10,25 @@ const userRouter = express.Router();
  * @access  Public (can be restricted later)
  */
 userRouter.post("/register", async (req, res) => {
-  try {
-    const { firstName, lastName, email, password, totalScore, badges } =
-      req.body;
-    const newUser = new User({
-      firstName,
-      lastName,
-      email,
-      password,
-      totalScore,
-      badges,
-    });
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
-  } catch (error) {
-    res.status(500).json({
-      message: "Error creating user",
-      error: error.message,
-    });
-  }
+    try {
+        const { firstName, lastName, email, password, totalScore, badges } =
+            req.body;
+        const newUser = new User({
+            firstName,
+            lastName,
+            email,
+            password,
+            totalScore,
+            badges,
+        });
+        const savedUser = await newUser.save();
+        res.status(201).json(savedUser);
+    } catch (error) {
+        res.status(500).json({
+            message: "Error creating user",
+            error: error.message,
+        });
+    }
 });
 
 /**
@@ -136,7 +136,7 @@ userRouter.post("/:id/reward/badge", async (req, res) => {
  * @desc    Add points to a user
  * @access  Public (can be restricted later)
  */
-userRouter.post("/:id/reward/addPoints", async (req, res) => {
+userRouter.post("/:id/reward/points", async (req, res) => {
     try {
         const { points } = req.body;
 
