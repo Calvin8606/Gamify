@@ -4,7 +4,7 @@ const User = require("../../models/user");
 const userRouter = express.Router();
 
 // POST /api/user
-router.post("/", async (req, res) => {
+router.post("/register", async (req, res) => {
     try {
         const { firstName, lastName, email, password, totalScore, badges } =
             req.body;
