@@ -5,7 +5,7 @@ const badges = require("../../models/BadgesEnum");
 const userRouter = express.Router();
 
 /**
- * @route   POST /api/users/register
+ * @route   POST /api/user/register
  * @desc    Create a new user
  * @access  Public (can be restricted later)
  */
@@ -32,7 +32,7 @@ userRouter.post("/register", async (req, res) => {
 });
 
 /**
- * @route   GET /api/users/:id
+ * @route   GET /api/user/:id
  * @desc    Get a user
  * @access  Public (can be restricted later)
  */
@@ -52,7 +52,7 @@ userRouter.get("/:id", async (req, res) => {
 });
 
 /**
- * @route   PUT /api/users/:id
+ * @route   PUT /api/user/:id
  * @desc    Update a user
  * @access  Public (can be restricted later)
  */
@@ -76,7 +76,7 @@ userRouter.put("/:id", async (req, res) => {
 });
 
 /**
- * @route   DELETE /api/users/:id
+ * @route   DELETE /api/user/:id
  * @desc    Delete a user
  * @access  Public (can be restricted later)
  */
@@ -96,7 +96,7 @@ userRouter.delete("/:id", async (req, res) => {
 });
 
 /**
- * @route   POST /api/users/:id/reward/badge
+ * @route   POST /api/user/:id/reward/badge
  * @desc    Reward a user with a badge
  * @access  Public (can be restricted later)
  */
@@ -132,7 +132,7 @@ userRouter.post("/:id/reward/badge", async (req, res) => {
 });
 
 /**
- * @route   POST /api/users/:id/reward/points
+ * @route   POST /api/user/:id/reward/points
  * @desc    Add points to a user
  * @access  Public (can be restricted later)
  */
