@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { BrowserRouter } from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
 import App from "./App";
 
 const authDomain = import.meta.env.VITE_AUTH0_DOMAIN;
@@ -21,9 +22,11 @@ root.render(
         redirect_uri: window.location.origin,
       }}
     >
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <UserProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </UserProvider>
     </Auth0Provider>
   </React.StrictMode>
 );
