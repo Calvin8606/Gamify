@@ -167,6 +167,30 @@ const Quiz = ({ userId }) => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [badgeAwarded, setBadgeAwarded] = useState(false); // To disable button after claiming
 
+    // Fetch user data on mount to initialize quizCompleted
+    useEffect(() => {
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`http://localhost:4781/api/user/${userId}`);
+          // Assume the user object has a quizCompleted property
+          console.log("User data fetched:", response.data);
+          if (response.data.completedQuiz) {
+            setQuizCompleted(true);
+            console.log("Quiz already completed.");
+          }
+          if (response.data.badges.includes("Rockstar")) {
+            setBadgeAwarded(true);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+  
+      if (userId) {
+        fetchUserData();
+      }
+    }, [userId]);
+
   const handleAnswerSelection = (answer) => {
     setSelectedAnswer(answer);
     setFeedback(""); // Clear previous feedback when user selects a new answer
@@ -236,6 +260,28 @@ const Quiz = ({ userId }) => {
       setShowExplanation(false);
     }
   };
+
+  // If quiz is completed, render a final congratulatory view instead of the quiz content.
+  if (quizCompleted) {
+    return (
+      <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md text-center">
+        <h2 className="text-2xl font-bold text-blue-600">Good job on your quiz!</h2>
+        {!badgeAwarded && (
+          <button
+            className="mt-4 px-6 py-3 bg-purple-500 text-white font-bold rounded-md hover:bg-purple-600 transition-all"
+            onClick={claimBadge}
+          >
+            Claim Your Badge!
+          </button>
+        )}
+        {feedback && (
+          <p className={`mt-4 text-lg font-semibold ${feedback.includes("✅") || feedback.includes("🏆") ? "text-green-600" : "text-red-600"}`}>
+            {feedback}
+          </p>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md text-center">
