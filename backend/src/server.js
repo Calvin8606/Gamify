@@ -1,8 +1,6 @@
-// CONSTANTS
+// Constants
 const express = require("express");
-const connectDB = require("./config/db");
 const bodyParser = require("body-parser");
-const dotenv = require("dotenv");
 const cors = require("cors");
 const apiRouter = require("./routes/api/api");
 
@@ -18,6 +16,7 @@ app.use(cors());
 app.use("/api", apiRouter);
 
 // PORT CONNECTION
+
 app.listen(port, () => {
-    console.log(`Listening on port: ${port}`);
+  console.log(`Listening on port: ${port}`);
 });
