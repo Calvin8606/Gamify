@@ -46,6 +46,14 @@ const EbitdaVisualization = () => {
     ebitda: entry.ebitdaValue,
   }));
 
+  // Function to format large numbers (handles negatives too)
+  const formatNumber = (num) => {
+    if (Math.abs(num) >= 1000) {
+      return `${(num / 1000).toFixed(1)}k`; // Convert to "k" format with 1 decimal
+    }
+    return num.toString(); // Keep small numbers unchanged
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md text-black">
       <h2 className="text-2xl font-bold text-blue-600 text-center mb-6">EBITDA Trends</h2>
@@ -70,8 +78,8 @@ const EbitdaVisualization = () => {
           <LineChart data={formattedData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="period" />
-            <YAxis />
-            <Tooltip />
+            <YAxis tickFormatter={formatNumber} /> {/* Format Y-axis numbers (supports negatives) */}
+            <Tooltip formatter={(value) => formatNumber(value)} /> {/* Format Tooltip numbers (supports negatives) */}
             <Legend />
             <Line type="monotone" dataKey="ebitda" stroke="#d62728" name="EBITDA" />
           </LineChart>
