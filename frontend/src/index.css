@@ -3,5 +3,5 @@
 
 body {
   font-family: "DM Sans", sans-serif;
-  @apply bg-[#27293D] text-white;
+   @apply bg-[#27293D] text-white;
 }
