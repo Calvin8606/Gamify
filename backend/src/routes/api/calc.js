@@ -4,6 +4,77 @@ const IncomeStatement = require("../../models/IncomeStatement");
 const calcRouter = express.Router();
 
 /**
+ * @route   GET /api/calc/ebitda/company?companyName={}
+ * @desc    Fetch all income statements for a company, calculate EBITDA for each, and return sorted results.
+ * @access  Public
+ */
+calcRouter.get("/ebitda/company", async (req, res) => {
+    try {
+        console.log("🔍 Incoming request to /api/calc/ebitda/company");
+        console.log("📝 Query Parameters:", req.query);
+
+        const { companyName } = req.query;
+
+        if (!companyName) {
+            return res
+                .status(400)
+                .json({ message: "Company name is required" });
+        }
+
+        console.log(
+            `📌 Fetching income statements for company: "${companyName}"`
+        );
+
+        // Fetch all income statements for the company
+        const incomeStatements = await IncomeStatement.find({ companyName });
+
+        if (incomeStatements.length === 0) {
+            console.warn(
+                `⚠️ No income statements found for company: ${companyName}`
+            );
+            return res
+                .status(404)
+                .json({
+                    message: "No income statements found for this company",
+                });
+        }
+
+        console.log("✅ Retrieved income statements. Calculating EBITDA...");
+
+        // Compute EBITDA for each period
+        const ebitdaData = incomeStatements.map((statement) => ({
+            companyName: statement.companyName,
+            period: statement.period,
+            ebitdaValue:
+                statement.operatingIncome +
+                statement.depreciation +
+                statement.amortization,
+        }));
+
+        console.log("✅ EBITDA Calculated:", ebitdaData);
+
+        // Sort by period
+        const sortedEbitdaData = ebitdaData
+            .map((entry) => ({
+                ...entry,
+                sortedPeriod: /^[0-9]{4}-Q[1-4]$/.test(entry.period) // If already formatted correctly
+                    ? entry.period
+                    : `${entry.period.split(" ")[1]}-${
+                          entry.period.split(" ")[0]
+                      }`, // Convert "Q1 2024" → "2024-Q1"
+            }))
+            .sort((a, b) => a.sortedPeriod.localeCompare(b.sortedPeriod));
+
+        console.log("🔢 Sorted EBITDA data:", sortedEbitdaData);
+
+        res.json(sortedEbitdaData);
+    } catch (error) {
+        console.error("❌ Error fetching EBITDA data:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+});
+
+/**
  * @route   POST /api/calc/ebitda
  * @desc    Calculate EBITDA from an income statement
  * @access  Public (can be restricted later)
@@ -46,71 +117,6 @@ calcRouter.post("/ebitda", async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });
-    }
-});
-
-/**
- * @route   GET /api/calc/ebitda/company?companyName={}
- * @desc    Fetch EBITDA data filtered by company name, sorted by period correctly
- * @access  Public (can be restricted later)
- */
-calcRouter.get("/ebitda/company", async (req, res) => {
-    try {
-        const { companyName } = req.query;
-
-        if (!companyName) {
-            return res
-                .status(400)
-                .json({ message: "Company name is required" });
-        }
-
-        const ebitdaData = await EBITDA.aggregate([
-            { $match: { companyName } },
-            {
-                $addFields: {
-                    sortedPeriod: {
-                        $cond: [
-                            {
-                                $regexMatch: {
-                                    input: "$period",
-                                    regex: /^[0-9]{4}-Q[1-4]$/,
-                                },
-                            },
-                            { $toString: "$period" }, // Keep existing format if already correct
-                            {
-                                $concat: [
-                                    {
-                                        $arrayElemAt: [
-                                            { $split: ["$period", " "] },
-                                            1,
-                                        ],
-                                    }, // Extract Year
-                                    "-",
-                                    {
-                                        $arrayElemAt: [
-                                            { $split: ["$period", " "] },
-                                            0,
-                                        ],
-                                    }, // Extract Quarter
-                                ],
-                            },
-                        ],
-                    },
-                },
-            },
-            { $sort: { sortedPeriod: 1 } }, // Sort by transformed period format
-        ]);
-
-        if (ebitdaData.length === 0) {
-            return res
-                .status(404)
-                .json({ message: "No EBITDA data found for this company" });
-        }
-
-        res.json(ebitdaData);
-    } catch (error) {
-        console.error("Error fetching EBITDA data:", error);
-        res.status(500).json({ message: "Server error", error: error.message });
     }
 });
 

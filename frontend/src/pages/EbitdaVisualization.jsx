@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-const BalanceSheetVisualization = () => {
-  const [balanceSheetData, setBalanceSheetData] = useState([]);
+const EbitdaVisualization = () => {
+  const [ebitdaData, setEbitdaData] = useState([]);
   const [companyName, setCompanyName] = useState(""); // Default empty
   const [companies, setCompanies] = useState([]); // Store list of companies
 
@@ -11,7 +11,7 @@ const BalanceSheetVisualization = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await axios.get("http://localhost:4781/api/companies/bs"); // New API to get companies
+        const response = await axios.get("http://localhost:4781/api/companies/is"); // API to get unique company names
         setCompanies(response.data);
         if (response.data.length > 0) {
           setCompanyName(response.data[0]); // Default to first company
@@ -29,11 +29,11 @@ const BalanceSheetVisualization = () => {
       try {
         if (!companyName) return;
         const encodedCompanyName = encodeURIComponent(companyName);
-        const response = await axios.get(`http://localhost:4781/api/balanceSheet/company?companyName=${encodedCompanyName}`);
+        const response = await axios.get(`http://localhost:4781/api/calc/ebitda/company?companyName=${encodedCompanyName}`);
 
-        setBalanceSheetData(response.data);
+        setEbitdaData(response.data);
       } catch (error) {
-        console.error("Error fetching balance sheet data:", error);
+        console.error("Error fetching EBITDA data:", error);
       }
     };
 
@@ -41,16 +41,14 @@ const BalanceSheetVisualization = () => {
   }, [companyName]);
 
   // Format data for visualization
-  const formattedData = balanceSheetData.map((entry) => ({
+  const formattedData = ebitdaData.map((entry) => ({
     period: entry.period,
-    assets: entry.assets.totalAssets,
-    liabilities: entry.liabilities.totalLiabilities,
-    equity: entry.shareholdersEquity.totalEquity,
+    ebitda: entry.ebitdaValue,
   }));
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md text-black">
-      <h2 className="text-2xl font-bold text-blue-600 text-center mb-6">Balance Sheet Trends</h2>
+      <h2 className="text-2xl font-bold text-blue-600 text-center mb-6">EBITDA Trends</h2>
 
       <div className="mb-4 text-center">
         <label htmlFor="company" className="font-semibold text-gray-900">Select Company:</label>
@@ -67,7 +65,7 @@ const BalanceSheetVisualization = () => {
       </div>
 
       <div className="mb-8">
-        <h3 className="text-lg font-semibold text-gray-900 text-center">Assets, Liabilities & Equity Over Time</h3>
+        <h3 className="text-lg font-semibold text-gray-900 text-center">EBITDA Over Time</h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={formattedData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -75,9 +73,7 @@ const BalanceSheetVisualization = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="assets" stroke="#1f77b4" name="Total Assets" />
-            <Line type="monotone" dataKey="liabilities" stroke="#ff7f0e" name="Total Liabilities" />
-            <Line type="monotone" dataKey="equity" stroke="#2ca02c" name="Total Equity" />
+            <Line type="monotone" dataKey="ebitda" stroke="#d62728" name="EBITDA" />
           </LineChart>
         </ResponsiveContainer>
       </div>
@@ -85,4 +81,4 @@ const BalanceSheetVisualization = () => {
   );
 };
 
-export default BalanceSheetVisualization;
+export default EbitdaVisualization;
