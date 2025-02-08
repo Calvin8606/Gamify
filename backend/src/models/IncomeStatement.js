@@ -7,7 +7,7 @@ const incomeStatementSchema = new mongoose.Schema({
         required: true,
     }, // Link to the user who uploaded it
     companyName: { type: String, required: true, trim: true }, // Company name
-    period: { type: String, required: true, trim: true }, // e.g., "Q1 2024" or "FY 2023"
+    period: { type: String, required: true, trim: true }, // e.g., "2024-Q1"
 
     revenue: { type: Number, required: true, default: 0 }, // Total revenue
     costOfGoodsSold: { type: Number, default: 0 }, // COGS (used for Gross Profit)
