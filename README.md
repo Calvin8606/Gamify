@@ -1,2 +1,2 @@
 # Gamify
-Gamify financial analysis for employees of a public-facing enemy
+Gamify financial analysis for employees of a public-facing company
