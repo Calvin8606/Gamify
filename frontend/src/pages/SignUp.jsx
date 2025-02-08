@@ -1,7 +1,7 @@
 import LoginButton from "../components/LoginButton";
 import { Link } from "react-router-dom";
 
-const SignIn = () => {
+const SignUp = () => {
   return (
     <>
       {/*
@@ -75,23 +75,22 @@ const SignIn = () => {
             </div>
 
             <div>
-              {/* <button
+              <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign in
-              </button> */}
-              <LoginButton />
+              </button>
             </div>
           </form>
 
           <p className="mt-10 text-center text-sm/6 text-gray-500">
-            Not a member?{" "}
+            Already a member?{" "}
             <Link
               to="/signup"
               className="font-semibold text-indigo-600 hover:text-indigo-500"
             >
-              Sign Up Now!
+              Log In Now!
             </Link>
           </p>
         </div>
@@ -100,4 +99,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
