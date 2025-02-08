@@ -1,5 +1,6 @@
 const express = require("express");
 const IncomeStatement = require("../../models/IncomeStatement");
+const User = require("../../models/User");
 
 const incomeStatementRouter = express.Router();
 
@@ -27,7 +28,7 @@ incomeStatementRouter.get("/:id", async (req, res) => {
 
 /**
  * @route   POST /api/incomeStatement/upload
- * @desc    Upload an income statement
+ * @desc    Upload an income statement and reward user with 50 points
  * @access  Public (can be restricted later)
  */
 incomeStatementRouter.post("/upload", async (req, res) => {
@@ -67,11 +68,18 @@ incomeStatementRouter.post("/upload", async (req, res) => {
             taxExpense,
         });
 
-        await newIncomeStatement.save();
+        const savedIncomeStatement = await newIncomeStatement.save();
+
+        // Award 50 points to the user
+        const user = await User.findById(userId);
+        if (user) {
+            user.totalScore += 50;
+            await user.save();
+        }
 
         res.status(201).json({
             message: "Income Statement uploaded successfully!",
-            incomeStatement: newIncomeStatement,
+            incomeStatement: savedIncomeStatement,
         });
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });
