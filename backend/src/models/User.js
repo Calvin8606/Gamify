@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     password: { required: true, type: String, trim: true },
     totalScore: { type: Number, required: false, default: 0 },
     badges: [{ type: String, enum: badges, default: [] }],
+    completedQuiz: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("user", userSchema);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const quizQuestions = [
@@ -164,6 +164,32 @@ const Quiz = ({ userId }) => {
   const [feedback, setFeedback] = useState("");
   const [retryCount, setRetryCount] = useState(0); // Track retries
   const [showExplanation, setShowExplanation] = useState(false); // Show explanation on 2nd incorrect attempt
+  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [badgeAwarded, setBadgeAwarded] = useState(false); // To disable button after claiming
+
+    // Fetch user data on mount to initialize quizCompleted
+    useEffect(() => {
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`http://localhost:4781/api/user/${userId}`);
+          // Assume the user object has a quizCompleted property
+          console.log("User data fetched:", response.data);
+          if (response.data.completedQuiz) {
+            setQuizCompleted(true);
+            console.log("Quiz already completed.");
+          }
+          if (response.data.badges.includes("Rockstar")) {
+            setBadgeAwarded(true);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+  
+      if (userId) {
+        fetchUserData();
+      }
+    }, [userId]);
 
   const handleAnswerSelection = (answer) => {
     setSelectedAnswer(answer);
@@ -184,15 +210,12 @@ const Quiz = ({ userId }) => {
 
       // Send points to backend
       try {
-        await axios.post(
-          `http://localhost:4781/api/user/${userId}/reward/points`,
-          { points: 10 }
-        );
+        await axios.post(`http://localhost:4781/api/user/${userId}/reward/points`, { points: 10 });
       } catch (error) {
         console.error("Error updating score:", error);
       }
 
-      // Move to next question after delay
+      // Move to next question after delay or mark quiz complete
       setTimeout(() => {
         if (currentQuestion + 1 < quizQuestions.length) {
           setCurrentQuestion(currentQuestion + 1);
@@ -200,6 +223,7 @@ const Quiz = ({ userId }) => {
           setFeedback("");
         } else {
           setFeedback(`🎉 Quiz Complete! Final Score: ${score + 10}`);
+          setQuizCompleted(true);
         }
       }, 1500);
     } else {
@@ -214,6 +238,19 @@ const Quiz = ({ userId }) => {
     }
   };
 
+  // Function to award the "Rockstar" badge when the user clicks the button
+  const claimBadge = async () => {
+    try {
+      await axios.post(`http://localhost:4781/api/user/${userId}/reward/badge`, { badge: "Rockstar" });
+      console.log("🏆 Rockstar badge awarded successfully!");
+      setBadgeAwarded(true);
+      setFeedback("🏆 Rockstar badge awarded successfully!");
+    } catch (error) {
+      console.error("❌ Error awarding badge:", error);
+      setFeedback("❌ Error awarding badge. Please try again.");
+    }
+  };
+
   const nextQuestion = () => {
     if (currentQuestion + 1 < quizQuestions.length) {
       setCurrentQuestion(currentQuestion + 1);
@@ -224,13 +261,33 @@ const Quiz = ({ userId }) => {
     }
   };
 
+  // If quiz is completed, render a final congratulatory view instead of the quiz content.
+  if (quizCompleted) {
+    return (
+      <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md text-center">
+        <h2 className="text-2xl font-bold text-blue-600">Good job on your quiz!</h2>
+        {!badgeAwarded && (
+          <button
+            className="mt-4 px-6 py-3 bg-purple-500 text-white font-bold rounded-md hover:bg-purple-600 transition-all"
+            onClick={claimBadge}
+          >
+            Claim Your Badge!
+          </button>
+        )}
+        {feedback && (
+          <p className={`mt-4 text-lg font-semibold ${feedback.includes("✅") || feedback.includes("🏆") ? "text-green-600" : "text-red-600"}`}>
+            {feedback}
+          </p>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md text-center">
       <h2 className="text-2xl font-bold text-blue-600">Balance Sheet Quiz</h2>
       <p className="text-gray-700 mt-2">
-        <strong>
-          Question {currentQuestion + 1} of {quizQuestions.length}:
-        </strong>
+        <strong>Question {currentQuestion + 1} of {quizQuestions.length}:</strong>
       </p>
       <h3 className="text-xl font-semibold mt-4 text-gray-900">
         {quizQuestions[currentQuestion].question}
@@ -242,13 +299,9 @@ const Quiz = ({ userId }) => {
             <button
               key={index}
               className={`px-6 py-3 rounded-md border text-lg font-medium transition-all
-                  ${
-                    selectedAnswer === option
-                      ? "bg-blue-500 text-white border-blue-600"
-                      : "bg-gray-100 text-gray-700 border-gray-300"
-                  }
-                  hover:bg-blue-400 hover:text-white
-                `}
+                ${selectedAnswer === option ? "bg-blue-500 text-white border-blue-600" : "bg-gray-100 text-gray-700 border-gray-300"}
+                hover:bg-blue-400 hover:text-white
+              `}
               onClick={() => handleAnswerSelection(option)}
             >
               {option}
@@ -277,17 +330,24 @@ const Quiz = ({ userId }) => {
           Next Question
         </button>
       ) : (
-        <p className="mt-6 text-lg font-bold text-green-600">
-          🎉 End of Quiz! Final Score: {score}
-        </p>
+        // When quiz is completed, show "Claim Your Badge!" button if not already awarded
+        <div className="mt-6">
+          <p className="text-lg font-bold text-green-600">
+            🎉 End of Quiz! Final Score: {score}
+          </p>
+          {!badgeAwarded && (
+            <button
+              className="mt-4 px-6 py-3 bg-purple-500 text-white font-bold rounded-md hover:bg-purple-600 transition-all"
+              onClick={claimBadge}
+            >
+              Claim Your Badge!
+            </button>
+          )}
+        </div>
       )}
 
       {feedback && (
-        <p
-          className={`mt-4 text-lg font-semibold ${
-            feedback.includes("✅") ? "text-green-600" : "text-red-600"
-          }`}
-        >
+        <p className={`mt-4 text-lg font-semibold ${feedback.includes("✅") || feedback.includes("🏆") ? "text-green-600" : "text-red-600"}`}>
           {feedback}
         </p>
       )}
