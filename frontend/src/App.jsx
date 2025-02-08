@@ -3,8 +3,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import { Routes, Route, Link } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import BalanceSheetQuiz from "./pages/BalanceSheetQuiz";
-import IncomeStatementQuiz from "./pages/IncomeStatementQuiz";
+import Quiz from "./pages/Quiz";
 import BalanceSheetVisualization from "./pages/BalanceSheetVisualization";
 import EbitdaVisualization from "./pages/EbitdaVisualization";
 
@@ -16,8 +15,7 @@ const App = () => {
       
       <Routes>
         <Route path="/" element={<SignIn />} />
-        <Route path="/balance-sheet-quiz" element={<BalanceSheetQuiz userId={testUserId}/>} />
-        <Route path="/income-statement-quiz" element={<IncomeStatementQuiz userId={testUserId}/>} />
+        <Route path="/quiz" element={<Quiz userId={testUserId}/>} />
         <Route path="/balance-sheet-visualization" element={<BalanceSheetVisualization />} />
         <Route path="/ebitda-visualization" element={<EbitdaVisualization />} />
         <Route path="/signup" element={<SignUp />} />
