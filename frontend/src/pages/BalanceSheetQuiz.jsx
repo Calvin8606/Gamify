@@ -47,7 +47,7 @@ const BalanceSheetQuiz = ({ userId }) => {
     
           // Send points update to backend using the correct endpoint
           try {
-            await axios.post(`http://localhost:5000/api/user/${userId}/reward/points`, {
+            await axios.post(`http://localhost:4781/api/user/${userId}/reward/points`, {
               points: 10,
             });
           } catch (error) {
