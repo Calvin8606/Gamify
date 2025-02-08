@@ -8,7 +8,7 @@ const calcRouter = express.Router();
  * @desc    Calculate EBITDA from an income statement
  * @access  Public (can be restricted later)
  */
-router.post("/ebitda", async (req, res) => {
+calcRouter.post("/ebitda", async (req, res) => {
     try {
         const { incomeStatementId } = req.body;
 
