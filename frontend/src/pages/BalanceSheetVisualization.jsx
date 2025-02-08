@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-const BalanceSheetVisualization = () => {
+const BalanceSheetVisualization = ({ userId }) => {
   const [balanceSheetData, setBalanceSheetData] = useState([]);
   const [companyName, setCompanyName] = useState(""); // Default empty
   const [companies, setCompanies] = useState([]); // Store list of companies
@@ -11,7 +11,7 @@ const BalanceSheetVisualization = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await axios.get("http://localhost:4781/api/companies/bs"); // New API to get companies
+        const response = await axios.get(`http://localhost:4781/api/companies/bs/${userId}`); // New API to get companies
         setCompanies(response.data);
         if (response.data.length > 0) {
           setCompanyName(response.data[0]); // Default to first company

@@ -16,8 +16,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route path="/quiz" element={<Quiz userId={testUserId}/>} />
-        <Route path="/balance-sheet-visualization" element={<BalanceSheetVisualization />} />
-        <Route path="/ebitda-visualization" element={<EbitdaVisualization />} />
+        <Route path="/balance-sheet-visualization" element={<BalanceSheetVisualization userId={testUserId}/>} />
+        <Route path="/ebitda-visualization" element={<EbitdaVisualization userId={testUserId}/>} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<HomePage />} />
       </Routes>

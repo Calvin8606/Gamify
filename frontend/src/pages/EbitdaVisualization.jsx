@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-const EbitdaVisualization = () => {
+const EbitdaVisualization = ({ userId }) => {
   const [ebitdaData, setEbitdaData] = useState([]);
   const [companyName, setCompanyName] = useState(""); // Default empty
   const [companies, setCompanies] = useState([]); // Store list of companies
@@ -11,7 +11,7 @@ const EbitdaVisualization = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await axios.get("http://localhost:4781/api/companies/is"); // API to get unique company names
+        const response = await axios.get(`http://localhost:4781/api/companies/is/${userId}`); // API to get unique company names
         setCompanies(response.data);
         if (response.data.length > 0) {
           setCompanyName(response.data[0]); // Default to first company
