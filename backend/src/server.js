@@ -1,4 +1,4 @@
-// Constants
+// CONSTANTS
 const express = require("express");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
@@ -10,7 +10,6 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // PORT CONNECTION
-
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
 });
