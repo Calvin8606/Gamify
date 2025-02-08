@@ -1,4 +1,6 @@
-const SignUp = () => {
+import LoginButton from "../components/LoginButton";
+
+const SignIn = () => {
   return (
     <>
       {/*
@@ -78,6 +80,7 @@ const SignUp = () => {
               >
                 Sign in
               </button> */}
+              <LoginButton />
             </div>
           </form>
 
@@ -96,4 +99,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;
