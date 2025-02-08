@@ -120,6 +120,9 @@ userRouter.post("/:id/reward/badge", async (req, res) => {
         }
 
         // Add badge to user's badges
+        if (badge === "Rockstar") {
+            user.completedQuiz = true;
+        }
         user.badges.push(badge);
         await user.save();
         res.status(200).json({ message: "Badge awarded successfully" });
