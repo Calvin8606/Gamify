@@ -137,6 +137,7 @@ userRouter.post("/:id/reward/badge", async (req, res) => {
  * @access  Public (can be restricted later)
  */
 userRouter.post("/:id/reward/points", async (req, res) => {
+    console.log("Rewarding points to user");
     try {
         const { points } = req.body;
 
@@ -158,12 +159,15 @@ userRouter.post("/:id/reward/points", async (req, res) => {
             user.totalScore = 0;
         }
 
+        console.log(`Old score: ${user.totalScore}, Adding points: ${points}`);
+
         // Add points to totalScore
         user.totalScore += points;
 
+        console.log(`New score: ${user.totalScore}`);
         // Save updated user
         await user.save();
-
+        console.log("Points added successfully");
         res.status(200).json({ message: "Points added successfully", user });
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });
