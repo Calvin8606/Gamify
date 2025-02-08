@@ -19,7 +19,7 @@ const App = () => {
         <Route path="/balance-sheet-quiz" element={<BalanceSheetQuiz userId={testUserId}/>} />
         <Route path="/income-statement-quiz" element={<IncomeStatementQuiz userId={testUserId}/>} />
         <Route path="/balance-sheet-visualization" element={<BalanceSheetVisualization />} />
-        <Route path="/ebitda-visualization" element={<EbitdaVisualizationnpm />} />
+        <Route path="/ebitda-visualization" element={<EbitdaVisualization />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<HomePage />} />
       </Routes>
