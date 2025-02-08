@@ -2,5 +2,6 @@
 @import "tailwindcss";
 
 body {
-  font-family: "DM Sans", sans-serif @apply bg-[#27293D] text-white;
+  font-family: "DM Sans", sans-serif;
+   @apply bg-[#27293D] text-white;
 }

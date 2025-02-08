@@ -14,6 +14,93 @@ const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const GROQ_API_URL = process.env.GROQ_API_URL;
 
 /**
+ * @route   GET /api/balanceSheet/company?companyName={}
+ * @desc    Fetch balance sheets filtered by company name, sorted by period correctly
+ * @access  Public (can be restricted later)
+ */
+balanceSheetRouter.get("/company", async (req, res) => {
+    try {
+        console.log("🔍 Incoming request to /api/balanceSheet/company");
+
+        // Log request query parameters
+        console.log("📝 Query Parameters:", req.query);
+
+        const { companyName } = req.query;
+
+        if (!companyName) {
+            console.warn("⚠️ Missing companyName in request");
+            return res
+                .status(400)
+                .json({ message: "Company name is required" });
+        }
+
+        console.log(`📌 Fetching balance sheets for company: ${companyName}`);
+
+        // Aggregate and transform data
+        const balanceSheets = await BalanceSheet.aggregate([
+            { $match: { companyName } },
+            {
+                $addFields: {
+                    sortedPeriod: {
+                        $cond: [
+                            {
+                                $regexMatch: {
+                                    input: "$period",
+                                    regex: /^[0-9]{4}-Q[1-4]$/,
+                                },
+                            },
+                            { $toString: "$period" }, // Keep existing format if already correct
+                            {
+                                $concat: [
+                                    {
+                                        $arrayElemAt: [
+                                            { $split: ["$period", " "] },
+                                            1,
+                                        ],
+                                    }, // Year
+                                    "-",
+                                    {
+                                        $arrayElemAt: [
+                                            { $split: ["$period", " "] },
+                                            0,
+                                        ],
+                                    }, // Quarter
+                                ],
+                            },
+                        ],
+                    },
+                },
+            },
+            { $sort: { sortedPeriod: 1 } }, // Sort by transformed period format
+        ]);
+
+        console.log("🔢 Sorted balance sheets count:", balanceSheets.length);
+
+        if (balanceSheets.length === 0) {
+            console.warn(
+                `⚠️ No balance sheets found for company: ${companyName}`
+            );
+            return res
+                .status(404)
+                .json({ message: "No balance sheets found for this company" });
+        }
+
+        console.log("✅ Successfully fetched and sorted balance sheets");
+        console.table(
+            balanceSheets.map((bs) => ({
+                period: bs.period,
+                sortedPeriod: bs.sortedPeriod,
+            }))
+        ); // Log table of periods
+
+        res.json(balanceSheets);
+    } catch (error) {
+        console.error("❌ Error fetching balance sheets:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+});
+
+/**
  * @route   GET /api/balanceSheet/:id
  * @desc    Get a balance sheet
  * @access  Public (can be restricted later)
@@ -126,7 +213,7 @@ balanceSheetRouter.post(
                     // Define the BalanceSheet model structure for Groq
                     const modelExample = {
                         companyName: "TechCorp Inc.",
-                        period: "Q1 2024",
+                        period: "2024-Q1",
                         assets: {
                             cash: 100000,
                             accountsReceivable: 50000,
@@ -157,7 +244,7 @@ balanceSheetRouter.post(
                                     content: `You are an AI that converts CSV data into the exact JSON format of a BalanceSheet model. 
                                     Given a CSV dataset with unknown headers, you must correctly map the columns to match the following model structure: 
                                     ${JSON.stringify(modelExample)}. 
-                                    Any missing fields should be set to 0. Some column names may be slightly different. If a column does not belong, ignore it. Respond with JSON only, no text. There may be multiple entries.`,
+                                    Any missing fields should be set to 0. Some column names may be slightly different. If a column does not belong, ignore it. The period should always follow the format YEAR-QUARTER (2023-Q3). Respond with JSON only, no text. There may be multiple entries.`,
                                 },
                                 {
                                     role: "user",

@@ -156,7 +156,7 @@ incomeStatementRouter.post(
                                     content: `You are an AI that converts CSV data into the exact JSON format of an IncomeStatement model. 
                                     Given a CSV dataset with unknown headers, you must correctly map the columns to match the following model structure: 
                                     ${JSON.stringify(modelExample)}. 
-                                    Any missing fields should be set to 0. Some column names may be slightly different. If a column does not belong, ignore it. Respond with JSON only, no text. There may be multiple entries.`,
+                                    Any missing fields should be set to 0. Some column names may be slightly different. If a column does not belong, ignore it. The period should always follow the format YEAR-QUARTER (2023-Q3). Respond with JSON only, no text. There may be multiple entries.`,
                                 },
                                 {
                                     role: "user",
