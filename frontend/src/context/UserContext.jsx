@@ -9,75 +9,63 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch user data by ID (Replace `userId` with actual user ID from auth or state)
-  const fetchUser = async (userId) => {
+  // 🔐 Retrieve token from local storage
+  const token = localStorage.getItem("token");
+
+  // 🌐 Set Axios default authorization headers
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+  }, [token]);
+
+  // ✅ Automatically fetch user data on page load
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
+  }, []);
+
+  // ✅ User login function
+  const loginUser = async (email, password) => {
     try {
-      const response = await axios.get(`/api/user/${userId}`);
-      setUser(response.data);
+      const response = await axios.post(`/api/user/login`, { email, password });
+
+      setUser(response.data.user); // ✅ Ensure setUser is defined here
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("token", response.data.token);
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.token}`;
     } catch (error) {
-      console.error("Error fetching user:", error);
-    } finally {
-      setLoading(false);
+      console.error("Login error:", error);
+      throw error;
     }
   };
 
-  // Update user data
-  const updateUser = async (userId, updatedData) => {
-    try {
-      const response = await axios.put(`/api/user/${userId}`, updatedData);
-      setUser(response.data);
-    } catch (error) {
-      console.error("Error updating user:", error);
-    }
-  };
-
-  // Delete user
-  const deleteUser = async (userId) => {
-    try {
-      await axios.delete(`/api/user/${userId}`);
-      setUser(null);
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
-  };
-
-  // Reward a user with a badge
-  const rewardBadge = async (userId, badge) => {
-    try {
-      const response = await axios.post(`/api/user/${userId}/reward/badge`, {
-        badge,
-      });
-      setUser(response.data);
-    } catch (error) {
-      console.error("Error awarding badge:", error);
-    }
-  };
-
-  // Add points to a user
-  const addPoints = async (userId, points) => {
-    try {
-      const response = await axios.post(`/api/user/${userId}/reward/points`, {
-        points,
-      });
-      setUser(response.data);
-    } catch (error) {
-      console.error("Error adding points:", error);
-    }
+  // ✅ User logout function
+  const logoutUser = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    delete axios.defaults.headers.common["Authorization"];
   };
 
   return (
     <UserContext.Provider
       value={{
         user,
+        setUser, // ✅ Add setUser to context
         loading,
-        fetchUser,
-        updateUser,
-        deleteUser,
-        rewardBadge,
-        addPoints,
+        loginUser,
+        logoutUser,
       }}
     >
       {children}
     </UserContext.Provider>
   );
 };
+
+export default UserProvider;
