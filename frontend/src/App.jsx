@@ -27,10 +27,12 @@ const App = () => {
   }
   return (
     <div>
+      {userId && <Navbar />}
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/infopage" element={<InfoPage />} />
         {userId ? (
           <>
             <Route path="/quiz" element={<Quiz userId={userId} />} />
