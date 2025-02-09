@@ -4,7 +4,7 @@ import IncomeStatementUpload from "../components/IncomeStatementUpload";
 
 const Upload = ({ userId }) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center pt-10">
       <h1 className="text-4xl font-bold mb-8">
         Upload Your Financial Statements
       </h1>
