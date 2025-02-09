@@ -6,9 +6,6 @@ const BalanceSheetUpload = ({ userId }) => {
   const [fileName, setFileName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
-  const [errorDetails, setErrorDetails] = useState("");
-
-  const { user } = useContext(UserContext);
 
   // Handle file selection
   const handleFileUpload = (event) => {
@@ -16,6 +13,7 @@ const BalanceSheetUpload = ({ userId }) => {
 
     if (!selectedFile) return;
 
+    // Validate file type
     if (selectedFile.type !== "text/csv") {
       setMessage("❌ Please upload a valid CSV file.");
       return;
@@ -23,8 +21,7 @@ const BalanceSheetUpload = ({ userId }) => {
 
     setFile(selectedFile);
     setFileName(selectedFile.name);
-    setMessage("");
-    setErrorDetails("");
+    setMessage(""); // Clear previous messages
   };
 
   // Handle form submission (Upload CSV)
@@ -36,11 +33,10 @@ const BalanceSheetUpload = ({ userId }) => {
 
     setUploading(true);
     setMessage("");
-    setErrorDetails("");
 
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", file); // Key must be "file" for the backend
 
       const response = await axios.post(
         `http://localhost:4781/api/balanceSheet/uploadCSVWithAI/${userId}`,
@@ -50,70 +46,49 @@ const BalanceSheetUpload = ({ userId }) => {
         }
       );
 
-      if (response.data.entriesAdded > 0) {
-        setMessage(
-          `✅ Successfully processed ${response.data.entriesAdded} entries!`
-        );
-      } else {
-        setMessage("⚠️ File uploaded, but no valid data was found.");
-      }
+      setMessage("✅ File uploaded successfully!");
     } catch (error) {
       console.error("Upload error:", error);
-
       setMessage("❌ Upload failed. Please try again.");
-      if (error.response && error.response.data.message) {
-        setErrorDetails(error.response.data.message);
-      }
     } finally {
       setUploading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="p-6 bg-gray-800 rounded-lg shadow-lg text-white w-96">
-        <h2 className="text-2xl font-bold mb-4 text-center">
-          Upload Balance Sheet (CSV)
-        </h2>
+    <div className="p-6 bg-gray-800 rounded-lg shadow-lg text-white">
+      <h2 className="text-2xl font-bold mb-4">Upload Balance Sheet (CSV)</h2>
 
-        {/* File Upload Input */}
-        <input
-          type="file"
-          accept=".csv"
-          onChange={handleFileUpload}
-          className="block w-full p-2 border border-gray-500 rounded-md bg-gray-700"
-        />
+      {/* File Upload Input */}
+      <input
+        type="file"
+        accept=".csv"
+        onChange={handleFileUpload}
+        className="block w-full p-2 border border-gray-500 rounded-md bg-gray-700"
+      />
 
-        {/* Display Uploaded File Name */}
-        {fileName && (
-          <p className="mt-2 text-sm text-center">📂 Uploaded: {fileName}</p>
-        )}
+      {/* Display Uploaded File Name */}
+      {fileName && <p className="mt-2 text-sm">📂 Uploaded: {fileName}</p>}
 
-        {/* Upload Button */}
-        <button
-          onClick={handleUpload}
-          disabled={uploading}
-          className={`mt-4 px-6 py-2 w-full font-semibold rounded-md ${
-            uploading
-              ? "bg-gray-500 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600"
-          }`}
-        >
-          {uploading ? "Uploading..." : "Upload File"}
-        </button>
+      {/* Upload Button */}
+      <button
+        onClick={handleUpload}
+        disabled={uploading}
+        className={`mt-4 px-6 py-2 font-semibold rounded-md ${
+          uploading
+            ? "bg-gray-500 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600"
+        }`}
+      >
+        {uploading ? "Uploading..." : "Upload File"}
+      </button>
 
-        {/* Status Message */}
-        {message && (
-          <p className="mt-4 text-sm font-semibold text-center">{message}</p>
-        )}
-
-        {/* Display Detailed Errors */}
-        {errorDetails && (
-          <p className="mt-2 text-red-400 text-sm italic text-center">
-            {errorDetails}
-          </p>
-        )}
-      </div>
+      {/* Status Message */}
+      {message && (
+        <p className="mt-4 text-sm font-semibold">
+          {message}
+        </p>
+      )}
     </div>
   );
 };
