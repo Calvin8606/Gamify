@@ -40,6 +40,9 @@ const Navbar = () => {
           <Link to="/badges" className="hover:text-yellow-400 transition-colors">
             My Badges
           </Link>
+          <Link to="/upload" className="hover:text-yellow-400 transition-colors">
+            Upload
+          </Link>
         </div>
 
         {/* Log Out Button */}
