@@ -1,83 +1,52 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
-// Create UserContext
 export const UserContext = createContext();
 
-// UserProvider Component
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch user data by ID (Replace `userId` with actual user ID from auth or state)
-  const fetchUser = async (userId) => {
-    try {
-      const response = await axios.get(`/api/user/${userId}`);
-      setUser(response.data);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // 🔐 Retrieve token from local storage
+  const token = localStorage.getItem("token");
 
-  // Update user data
-  const updateUser = async (userId, updatedData) => {
-    try {
-      const response = await axios.put(`/api/user/${userId}`, updatedData);
-      setUser(response.data);
-    } catch (error) {
-      console.error("Error updating user:", error);
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
-  };
+  }, [token]);
 
-  // Delete user
-  const deleteUser = async (userId) => {
-    try {
-      await axios.delete(`/api/user/${userId}`);
-      setUser(null);
-    } catch (error) {
-      console.error("Error deleting user:", error);
+  // ✅ Automatically fetch user data on page load
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // Ensure user contains `id`
     }
-  };
+    setLoading(false);
+  }, []);
 
-  // Reward a user with a badge
-  const rewardBadge = async (userId, badge) => {
+  const loginUser = async (email, password) => {
     try {
-      const response = await axios.post(`/api/user/${userId}/reward/badge`, {
-        badge,
-      });
-      setUser(response.data);
-    } catch (error) {
-      console.error("Error awarding badge:", error);
-    }
-  };
+      const response = await axios.post(`/api/user/login`, { email, password });
 
-  // Add points to a user
-  const addPoints = async (userId, points) => {
-    try {
-      const response = await axios.post(`/api/user/${userId}/reward/points`, {
-        points,
-      });
-      setUser(response.data);
+      const userData = response.data.user;
+      setUser(userData); // ✅ Ensure `id` is part of `user`
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", response.data.token);
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.token}`;
     } catch (error) {
-      console.error("Error adding points:", error);
+      console.error("Login error:", error);
+      throw error;
     }
   };
 
   return (
-    <UserContext.Provider
-      value={{
-        user,
-        loading,
-        fetchUser,
-        updateUser,
-        deleteUser,
-        rewardBadge,
-        addPoints,
-      }}
-    >
+    <UserContext.Provider value={{ user, setUser, loading, loginUser }}>
       {children}
     </UserContext.Provider>
   );
 };
+
+export default UserProvider;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
@@ -8,18 +8,25 @@ import InfoPage from "./pages/InfoPage";
 import Quiz from "./pages/Quiz";
 import BalanceSheetVisualization from "./pages/BalanceSheetVisualization";
 import EbitdaVisualization from "./pages/EbitdaVisualization";
-
-const testUserId = "67a780bea849cd0d0fcd62f8";
+import { UserContext } from "./context/UserContext";
 
 const App = () => {
+  const { user } = useContext(UserContext);
+
+  const userId = user ? user._id : null;
   return (
     <div>
-      <Navbar />
       <Routes>
         <Route path="/" element={<SignIn />} />
-        <Route path="/quiz" element={<Quiz userId={testUserId}/>} />
-        <Route path="/balance-sheet-visualization" element={<BalanceSheetVisualization />} />
-        <Route path="/ebitda-visualization" element={<EbitdaVisualization />} />
+        <Route path="/quiz" element={<Quiz userId={userId} />} />
+        <Route
+          path="/balance-sheet-visualization"
+          element={<BalanceSheetVisualization userId={userId} />}
+        />
+        <Route
+          path="/ebitda-visualization"
+          element={<EbitdaVisualization userId={userId} />}
+        />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/infopage" element={<InfoPage />} /> 

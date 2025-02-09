@@ -4,9 +4,9 @@ import { FaBolt } from "react-icons/fa";
 import styled, { keyframes } from "styled-components";
 import logo from "../images/logo.jpg";
 
+// Flip and pulse animation
 const flipAndPulse = keyframes`
-0% { transform: rotateY(0deg) scale(1); }  
-0% { transform: rotateY(0deg) scale(1); }  
+  0% { transform: rotateY(0deg) scale(1); }  
   5% { transform: rotateY(45deg) scale(1.1); }  
   10% { transform: rotateY(90deg) scale(1.2); }  
   15% { transform: rotateY(135deg) scale(1.3); }  
@@ -26,7 +26,20 @@ const flipAndPulse = keyframes`
   85% { transform: rotateY(300deg) scale(1.4); }  
   90% { transform: rotateY(324deg) scale(1.2); }  
   95% { transform: rotateY(342deg) scale(1.1); }  
-  100% { transform: rotateY(360deg) scale(1); }  
+  100% { transform: rotateY(360deg) scale(1); } 
+`;
+
+// Create a styled component for the logo
+const AnimatedLogo = styled.img`
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  animation: h-70 w-70 rounded-full infinite;
+  
+
+  &:hover {
+    animation: ${flipAndPulse} 1s;
+  }
 `;
 
 const HomePage = () => {
@@ -34,11 +47,7 @@ const HomePage = () => {
     <div className="min-h-screen flex flex-col p-10 bg-[#27293D] text-white">
       {/* Logo Section */}
       <div className="flex justify-center mb-4">
-        <img
-          src={logo}
-          alt="Money Stretch Logo"
-          className="h-70 w-70 rounded-full hover:animate-spin transition-transform duration-500"
-        />
+        <AnimatedLogo src={logo} alt="Money Stretch Logo" />
       </div>
       {/* Title Section */}
       <header className="text-center mb-8">
@@ -86,16 +95,12 @@ const HomePage = () => {
       
       {/* Quiz Button */}
       <div className="text-center mt-8">
-      <button className="px-6 py-3 bg-yellow-500 text-white text-lg font-bold rounded-lg shadow-lg hover:bg-yellow-600 hover:scale-105 transition-transform duration-300">
-        Quiz Now
-      </button>
+        <button className="px-6 py-3 bg-yellow-500 text-white text-lg font-bold rounded-lg shadow-lg hover:bg-yellow-600 hover:scale-105 transition-transform duration-300">
+          Quiz Now
+        </button>
       </div>
     </div>
   );
 };
 
 export default HomePage;
-
-
-
-
