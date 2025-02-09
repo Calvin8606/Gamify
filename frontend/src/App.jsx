@@ -18,8 +18,12 @@ const App = () => {
   // Ensure we have the correct userId before rendering routes
   useEffect(() => {
     if (user) {
-      setUserId(user.id);
-      console.log(`User ID: ${user.id}`);
+      if (!user.id) {
+        console.error("user.id is undefined! Check backend response.");
+      } else {
+        setUserId(user.id);
+        console.log(`User ID set: ${user.id}`);
+      }
     }
   }, [user]);
 
@@ -45,15 +49,11 @@ const App = () => {
               path="/ebitda-visualization"
               element={<EbitdaVisualization userId={userId} />}
             />
-            <Route
-              path="/badges"
-              element={<Badges userId={userId} />}
-            />
+            <Route path="/badges" element={<Badges userId={userId} />} />
           </>
         ) : (
           <Route path="/" /> // Redirect to login if user is not authenticated
         )}
-       
       </Routes>
     </div>
   );

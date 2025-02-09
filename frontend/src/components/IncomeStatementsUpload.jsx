@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const BalanceSheetUpload = ({ userId }) => {
+const IncomeStatementsUpload = ({ userId }) => {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
   const [errorDetails, setErrorDetails] = useState("");
-
-  const { user } = useContext(UserContext);
 
   // Handle file selection
   const handleFileUpload = (event) => {
@@ -43,7 +41,7 @@ const BalanceSheetUpload = ({ userId }) => {
       formData.append("file", file);
 
       const response = await axios.post(
-        `http://localhost:4781/api/balanceSheet/uploadCSVWithAI/${userId}`,
+        `http://localhost:4781/api/incomeStatement/uploadCSVWithAI/${userId}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -73,7 +71,7 @@ const BalanceSheetUpload = ({ userId }) => {
     <div className="flex items-center justify-center">
       <div className="p-6 bg-gray-800 rounded-lg shadow-lg text-white w-96">
         <h2 className="text-2xl font-bold mb-4 text-center">
-          Upload Balance Sheet (CSV)
+          Upload Income Statement (CSV)
         </h2>
 
         {/* File Upload Input */}
@@ -118,4 +116,4 @@ const BalanceSheetUpload = ({ userId }) => {
   );
 };
 
-export default BalanceSheetUpload;
+export default IncomeStatementsUpload;
