@@ -13,3 +13,54 @@ Gamify financial analysis for employees of a public-facing company
 - Incorporate progress and achievement-based features (points, badges, etc.)    
 - Improve social engagement & competition    
 - Ensure retention through personalization (setting up avatars, personal goals, etc.), daily challenges, etc.    
+
+## 📌 Team Members  
+- **[Calvin Chau]** – [Frontend/Backend]  
+- **[Holden Casey]** – [Frontend/Backend]  
+- **[Jason Le]** – [Frontend]  
+- **[Henry Tran]** – [Frontend]  
+
+---
+
+## 🎯 Project Overview  
+### **What does your project do?**  
+[We gamified finance. Our goal was to make it fun and easy to learn fianancial analyses and gain rewards!]  
+
+**Example:**  
+Our project, **[Project Name]**, is a **[type of app/platform/tool]** designed to help **[target audience]** with **[core functionality]**. It aims to **[explain the main goal or problem it solves]**.  
+
+---
+
+## 🛠 Tech Stack & Tools Used  
+- **Frontend:** [React, TailwindCSS, etc.]  
+- **Backend:** [Node.js, Express, MongoDB, etc.]  
+- **Database:** [PostgreSQL, Firebase, etc.]  
+- **APIs & Frameworks:** [Groq API, OpenAI API, etc.]  
+- **Other Technologies:** [Docker, AWS, WebSockets, etc.]  
+
+---
+
+## 🚧 Challenges Faced & How We Overcame Them  
+### **1️⃣ Challenge: [Describe the problem]**  
+✅ **Solution:** [Explain how you fixed it]  
+
+### **2️⃣ Challenge: [Describe another problem]**  
+✅ **Solution:** [Explain your approach to solving it]  
+
+---
+
+## 📂 GitHub Repository  
+🔗 **[GitHub Repo Link](https://github.com/your-repo)**  
+
+**Includes:**  
+✅ Source Code  
+✅ Documentation & Setup Instructions  
+✅ Detailed README.md  
+
+---
+
+## 📝 How to Run the Project Locally  
+### **1️⃣ Clone the repository**  
+```bash
+git clone https://github.com/your-repo.git
+cd your-repo
