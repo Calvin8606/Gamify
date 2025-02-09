@@ -16,7 +16,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="text-3xl font-extrabold text-yellow-400">
-          <Link to="/">Money Stretch</Link>
+          <Link to="/home">Money Stretch</Link>
         </div>
 
         {/* Navigation Links */}
