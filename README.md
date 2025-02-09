@@ -49,5 +49,5 @@ Our project, **Money Stretch**, is a **Game/Learning tool** designed to help **p
 ---
 
 ### **1️⃣ Clone the repository**  
-git clone https://github.com/Calvin8606/Gamify
-cd gamify
+- **git clone https://github.com/Calvin8606/Gamify
+- **cd gamify
