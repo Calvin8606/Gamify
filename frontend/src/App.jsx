@@ -10,6 +10,7 @@ import BalanceSheetVisualization from "./pages/BalanceSheetVisualization";
 import EbitdaVisualization from "./pages/EbitdaVisualization";
 import { UserContext } from "./context/UserContext";
 import Badges from "./pages/Badges";
+import Upload from "./pages/Upload";
 
 const App = () => {
   const { user, loading } = useContext(UserContext);
@@ -48,6 +49,10 @@ const App = () => {
             <Route
               path="/badges"
               element={<Badges userId={userId} />}
+            />
+            <Route
+              path="/upload"
+              element={<Upload userId={userId} />}
             />
           </>
         ) : (
