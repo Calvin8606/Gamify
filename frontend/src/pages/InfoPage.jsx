@@ -53,13 +53,6 @@ const InfoPage = () => {
           </ul>
         </section>
       </div>
-      
-      {/* Back Button */}
-      <div className="text-center mt-8">
-        <button className="px-6 py-3 bg-yellow-500 text-white text-lg font-bold rounded-lg shadow-lg hover:bg-yellow-600 hover:scale-105 transition-transform duration-300">
-          Back to Home
-        </button>
-      </div>
     </div>
   );
 };

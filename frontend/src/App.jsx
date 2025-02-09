@@ -9,6 +9,7 @@ import Quiz from "./pages/Quiz";
 import BalanceSheetVisualization from "./pages/BalanceSheetVisualization";
 import EbitdaVisualization from "./pages/EbitdaVisualization";
 import { UserContext } from "./context/UserContext";
+import Badges from "./pages/Badges";
 
 const App = () => {
   const { user, loading } = useContext(UserContext);
@@ -43,6 +44,10 @@ const App = () => {
             <Route
               path="/ebitda-visualization"
               element={<EbitdaVisualization userId={userId} />}
+            />
+            <Route
+              path="/badges"
+              element={<Badges userId={userId} />}
             />
           </>
         ) : (

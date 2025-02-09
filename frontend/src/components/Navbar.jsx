@@ -11,7 +11,7 @@ const Navbar = () => {
     logoutUser(); // Calls the logout function from context
     navigate("/"); // Redirect to login page
   };
-  
+
   return (
     <nav className="bg-[#27293D] text-white shadow-md p-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -36,6 +36,9 @@ const Navbar = () => {
           </Link>
           <Link to="/ebitda-visualization" className="hover:text-yellow-400 transition-colors">
             Ebitda Visual
+          </Link>
+          <Link to="/badges" className="hover:text-yellow-400 transition-colors">
+            My Badges
           </Link>
         </div>
 

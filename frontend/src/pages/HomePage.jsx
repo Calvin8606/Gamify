@@ -90,15 +90,7 @@ const HomePage = () => {
         <p className="mt-2 text-lg">
           Learn how to play Money Stretch and maximize your financial knowledge through interactive challenges! Answer questions correctly to earn points, and receive detailed explanations when you make mistakes. This engaging approach ensures you gain a deep understanding of financial principles while having fun!
         </p>
-        <img src="https://via.placeholder.com/400" alt="Game Tutorial" className="mt-4 mx-auto rounded-lg shadow-md" />
       </section>
-      
-      {/* Quiz Button */}
-      <div className="text-center mt-8">
-        <button className="px-6 py-3 bg-yellow-500 text-white text-lg font-bold rounded-lg shadow-lg hover:bg-yellow-600 hover:scale-105 transition-transform duration-300">
-          Quiz Now
-        </button>
-      </div>
     </div>
   );
 };
