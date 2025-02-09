@@ -1,10 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
-// Create UserContext
 export const UserContext = createContext();
 
-// UserProvider Component
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,7 +10,6 @@ export const UserProvider = ({ children }) => {
   // 🔐 Retrieve token from local storage
   const token = localStorage.getItem("token");
 
-  // 🌐 Set Axios default authorization headers
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -23,18 +20,18 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      setUser(JSON.parse(storedUser)); // Ensure user contains `id`
     }
     setLoading(false);
   }, []);
 
-  // ✅ User login function
   const loginUser = async (email, password) => {
     try {
       const response = await axios.post(`/api/user/login`, { email, password });
 
-      setUser(response.data.user); // ✅ Ensure setUser is defined here
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      const userData = response.data.user;
+      setUser(userData); // ✅ Ensure `id` is part of `user`
+      localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("token", response.data.token);
       axios.defaults.headers.common[
         "Authorization"
@@ -45,24 +42,8 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  // ✅ User logout function
-  const logoutUser = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    delete axios.defaults.headers.common["Authorization"];
-  };
-
   return (
-    <UserContext.Provider
-      value={{
-        user,
-        setUser, // ✅ Add setUser to context
-        loading,
-        loginUser,
-        logoutUser,
-      }}
-    >
+    <UserContext.Provider value={{ user, setUser, loading, loginUser }}>
       {children}
     </UserContext.Provider>
   );

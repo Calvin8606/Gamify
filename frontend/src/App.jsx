@@ -8,23 +8,22 @@ import BalanceSheetVisualization from "./pages/BalanceSheetVisualization";
 import EbitdaVisualization from "./pages/EbitdaVisualization";
 import { UserContext } from "./context/UserContext";
 
-const { user, setUser } = useContext(UserContext);
-
-const testUserId = user._id;
-
 const App = () => {
+  const { user } = useContext(UserContext);
+
+  const userId = user ? user.id : null;
   return (
     <div>
       <Routes>
         <Route path="/" element={<SignIn />} />
-        <Route path="/quiz" element={<Quiz userId={testUserId} />} />
+        <Route path="/quiz" element={<Quiz userId={userId} />} />
         <Route
           path="/balance-sheet-visualization"
-          element={<BalanceSheetVisualization userId={testUserId} />}
+          element={<BalanceSheetVisualization userId={userId} />}
         />
         <Route
           path="/ebitda-visualization"
-          element={<EbitdaVisualization userId={testUserId} />}
+          element={<EbitdaVisualization userId={userId} />}
         />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<HomePage />} />
