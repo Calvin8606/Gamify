@@ -20,9 +20,12 @@ const App = () => {
         <Route path="/quiz" element={<Quiz userId={testUserId} />} />
         <Route
           path="/balance-sheet-visualization"
-          element={<BalanceSheetVisualization />}
+          element={<BalanceSheetVisualization userId={testUserId} />}
         />
-        <Route path="/ebitda-visualization" element={<EbitdaVisualization />} />
+        <Route
+          path="/ebitda-visualization"
+          element={<EbitdaVisualization userId={testUserId} />}
+        />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<HomePage />} />
       </Routes>
