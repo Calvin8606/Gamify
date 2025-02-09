@@ -15,16 +15,16 @@ Gamify financial analysis for employees of a public-facing company
 - Ensure retention through personalization (setting up avatars, personal goals, etc.), daily challenges, etc.    
 
 ## 📌 Team Members  
-- **[Calvin Chau]** – [Frontend/Backend]  
-- **[Holden Casey]** – [Frontend/Backend]  
-- **[Jason Le]** – [Frontend]  
-- **[Henry Tran]** – [Frontend]  
+- **Calvin Chau** – Frontend/Backend  
+- **Holden Casey** – Frontend/Backend  
+- **Jason Le** – Frontend 
+- **Henry Tran** – Frontend  
 
 ---
 
 ## 🎯 Project Overview  
-### **What does your project do?**  
-[We gamified finance. Our goal was to make it fun and easy to learn fianancial analyses and gain rewards!]  
+### **What does our project do?**  
+We gamified finance. Our goal was to make it fun and easy to learn fianancial analyses and gain rewards!
 
 **Example:**  
 Our project, **[Project Name]**, is a **[type of app/platform/tool]** designed to help **[target audience]** with **[core functionality]**. It aims to **[explain the main goal or problem it solves]**.  
@@ -33,10 +33,9 @@ Our project, **[Project Name]**, is a **[type of app/platform/tool]** designed t
 
 ## 🛠 Tech Stack & Tools Used  
 - **Frontend:** [React, TailwindCSS, etc.]  
-- **Backend:** [Node.js, Express, MongoDB, etc.]  
-- **Database:** [PostgreSQL, Firebase, etc.]  
-- **APIs & Frameworks:** [Groq API, OpenAI API, etc.]  
-- **Other Technologies:** [Docker, AWS, WebSockets, etc.]  
+- **Backend:** [Node.js, Express.js]  
+- **Database:** [MongoDB etc.]  
+- **APIs & Frameworks:** [Groq API]  
 
 ---
 
