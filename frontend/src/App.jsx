@@ -46,19 +46,12 @@ const App = () => {
               path="/ebitda-visualization"
               element={<EbitdaVisualization userId={userId} />}
             />
-            <Route
-              path="/badges"
-              element={<Badges userId={userId} />}
-            />
-            <Route
-              path="/upload"
-              element={<Upload userId={userId} />}
-            />
+            <Route path="/badges" element={<Badges userId={userId} />} />
+            <Route path="/upload" element={<Upload userId={userId} />} />
           </>
         ) : (
           <Route path="/" /> // Redirect to login if user is not authenticated
         )}
-       
       </Routes>
     </div>
   );
