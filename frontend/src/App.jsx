@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import { Routes, Route, Link } from "react-router-dom";
@@ -9,24 +9,42 @@ import EbitdaVisualization from "./pages/EbitdaVisualization";
 import { UserContext } from "./context/UserContext";
 
 const App = () => {
-  const { user } = useContext(UserContext);
+  const { user, loading } = useContext(UserContext);
+  const [userId, setUserId] = useState(null);
 
-  const userId = user ? user._id : null;
+  // Ensure we have the correct userId before rendering routes
+  useEffect(() => {
+    if (user) {
+      setUserId(user.id);
+      console.log(`User ID: ${user.id}`);
+    }
+  }, [user]);
+
+  if (loading) {
+    return <div className="text-center mt-10">Loading...</div>;
+  }
   return (
     <div>
       <Routes>
         <Route path="/" element={<SignIn />} />
-        <Route path="/quiz" element={<Quiz userId={userId} />} />
-        <Route
-          path="/balance-sheet-visualization"
-          element={<BalanceSheetVisualization userId={userId} />}
-        />
-        <Route
-          path="/ebitda-visualization"
-          element={<EbitdaVisualization userId={userId} />}
-        />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<HomePage />} />
+        {userId ? (
+          <>
+            <Route path="/quiz" element={<Quiz userId={userId} />} />
+            <Route
+              path="/balance-sheet-visualization"
+              element={<BalanceSheetVisualization userId={userId} />}
+            />
+            <Route
+              path="/ebitda-visualization"
+              element={<EbitdaVisualization userId={userId} />}
+            />
+          </>
+        ) : (
+          <Route path="/" /> // Redirect to login if user is not authenticated
+        )}
+       
       </Routes>
     </div>
   );

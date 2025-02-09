@@ -45,7 +45,7 @@ const SignIn = () => {
       console.log("LOGGED IN");
 
       // ✅ Redirect to dashboard or home page
-      navigate("/ebitda-visualization");
+      navigate("/home");
     } catch (error) {
       console.log(error);
       setErrorMessage(
