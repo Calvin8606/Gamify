@@ -1,8 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import Navbar from "./components/Navbar";
 import { Routes, Route, Link } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import InfoPage from "./pages/InfoPage";
 import Quiz from "./pages/Quiz";
 import BalanceSheetVisualization from "./pages/BalanceSheetVisualization";
 import EbitdaVisualization from "./pages/EbitdaVisualization";
