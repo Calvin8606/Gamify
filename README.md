@@ -27,39 +27,27 @@ Gamify financial analysis for employees of a public-facing company
 We gamified finance. Our goal was to make it fun and easy to learn fianancial analyses and gain rewards!
 
 **Example:**  
-Our project, **[Project Name]**, is a **[type of app/platform/tool]** designed to help **[target audience]** with **[core functionality]**. It aims to **[explain the main goal or problem it solves]**.  
+Our project, **Money Stretch**, is a **Game/Learning tool** designed to help **people** with **learning finances**. It aims to **to help people learn finance the fun way**.  
 
 ---
 
 ## 🛠 Tech Stack & Tools Used  
-- **Frontend:** [React, TailwindCSS, etc.]  
-- **Backend:** [Node.js, Express.js]  
-- **Database:** [MongoDB etc.]  
-- **APIs & Frameworks:** [Groq API]  
+- **Frontend:** React, TailwindCSS, etc.  
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB etc.  
+- **APIs & Frameworks:** Groq API  
 
 ---
 
 ## 🚧 Challenges Faced & How We Overcame Them  
-### **1️⃣ Challenge: [Describe the problem]**  
-✅ **Solution:** [Explain how you fixed it]  
+### **1️⃣ Challenge: Game Logic**  
+✅ **Solution:** It was really hard to control data flow through out the project such as counting score, but through readings, trial, and error we were able to complete the project. 
 
-### **2️⃣ Challenge: [Describe another problem]**  
-✅ **Solution:** [Explain your approach to solving it]  
-
----
-
-## 📂 GitHub Repository  
-🔗 **[GitHub Repo Link](https://github.com/your-repo)**  
-
-**Includes:**  
-✅ Source Code  
-✅ Documentation & Setup Instructions  
-✅ Detailed README.md  
+### **2️⃣ Challenge: Uploading CSV and formatting it for the graph**  
+✅ **Solution:** It was really hard figuring out how to upload our CSV and then formatting it but after some thinking, we decided to use groq AI to format our data and fetch it in the front end to create our graphs. 
 
 ---
 
-## 📝 How to Run the Project Locally  
 ### **1️⃣ Clone the repository**  
-```bash
-git clone https://github.com/your-repo.git
-cd your-repo
+git clone https://github.com/Calvin8606/Gamify
+cd gamify
