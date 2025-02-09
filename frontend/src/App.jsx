@@ -11,7 +11,7 @@ import { UserContext } from "./context/UserContext";
 const App = () => {
   const { user } = useContext(UserContext);
 
-  const userId = user ? user.id : null;
+  const userId = user ? user._id : null;
   return (
     <div>
       <Routes>
